@@ -2,13 +2,9 @@
 
 set -e
 
-usage() {
+if [ $# -le 4 ]; then
     echo "Usage: $0 [server directory] [output directory] [client cn] [keysize] [days]"
-    exit
-}
-
-if [ "$#" -lt 5 ]; then
-    usage
+    exit 1
 fi
 
 IN_DIR=$1
