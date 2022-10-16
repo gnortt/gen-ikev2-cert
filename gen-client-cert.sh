@@ -13,7 +13,7 @@ CLIENT_CN=$3
 KEY_SIZE=$4
 DAYS=$5
 
-CA_SUBJECT="$(openssl x509 -noout -subject -in $IN_DIR/ca.crt)"
+CA_SUBJECT="$(openssl x509 -noout -subject -in "$IN_DIR"/ca.crt)"
 CA_CN="${CA_SUBJECT:13}"
 
 mkdir "$OUT_DIR"
