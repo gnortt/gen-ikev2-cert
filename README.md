@@ -32,5 +32,3 @@ After creating a certificate authority and server TLS key and certificate, creat
 
     client01.crt  client01.key  client01.p12
 ```
-
-A sample `strongswan` `ipsec.conf` suitable for iOS' built-in IPsec IKEv2 VPNs can be found in this repository. Do not forget to replace `<server IPv4 address>`, `<server certificate file>` and `<dns server IPv4>` in this file. On iOS you will need the `.p12` key file.
