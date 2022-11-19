@@ -2,16 +2,15 @@
 
 set -e
 
-if [ $# -le 4 ]; then
-    echo "Usage: $0 [server directory] [output directory] [client cn] [keysize] [days]"
+if [ $# -le 3 ]; then
+    echo "Usage: $0 [server directory] [output directory] [client cn] [days]"
     exit 1
 fi
 
 IN_DIR=$1
 OUT_DIR=$2
 CLIENT_CN=$3
-KEY_SIZE=$4
-DAYS=$5
+DAYS=$4
 
 CA_SUBJECT="$(openssl x509 -noout -subject -in "$IN_DIR"/ca.crt)"
 CA_CN="${CA_SUBJECT:13}"
@@ -21,19 +20,16 @@ OUT_DIR="$(pwd)/$OUT_DIR"
 
 ipsec pki \
     --gen \
-    --type rsa \
-    --size $KEY_SIZE \
+    --type ed25519 \
     --outform pem \
 > "$OUT_DIR/$CLIENT_CN.key"
 
 ipsec pki \
     --pub \
-    --type rsa \
     --in "$OUT_DIR/$CLIENT_CN.key" \
 | ipsec pki \
     --issue \
     --lifetime $DAYS \
-    --digest sha256 \
     --cacert "$IN_DIR"/ca.crt \
     --cakey "$IN_DIR"/ca.key \
     --dn "CN=$CLIENT_CN" \
