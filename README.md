@@ -8,7 +8,8 @@ Generated are `ed25519` ECC CA, server and client keys, and `pkcs12` formatted c
 
 Required dependencies:
 
-- IPsec server, such as strongswan
+- strongswan
+- strongswan-pki
 - openssl
 
 # Usage
