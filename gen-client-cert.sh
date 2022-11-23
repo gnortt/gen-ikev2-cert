@@ -80,7 +80,7 @@ ipsec pki \
 
 openssl pkcs12 \
     -export \
-    -passout pass: \
+    -legacy \
     -inkey "$OUT_DIR/$CLIENT_CN.key" \
     -in "$OUT_DIR/$CLIENT_CN.crt" \
     -name "$CLIENT_CN" \
