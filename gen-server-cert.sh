@@ -2,15 +2,40 @@
 
 set -e
 
-if [ $# -le 3 ]; then
-    echo "Usage: $0 [output directory] [ca cn] [server cn] [days]"
+usage() {
+    echo "Usage: $0 [options] <ca_cn> <server_cn>
+
+    Options:
+      -k    rsa key size, default 2048 bits
+      -l    certificate lifetimes, default 365 days
+      -o    output directory, default <server_cn>
+      -t    key type (rsa or ed25519), default ed25519"
     exit 1
+}
+
+while getopts "k:l:o:t:" flag; do
+    case "$flag" in
+        k)  KEY_SIZE=$OPTARG;;
+        l)  DAYS=$OPTARG;;
+        o)  OUT_DIR=$OPTARG;;
+        t)  TYPE=$OPTARG;;
+        \?) usage;;
+    esac
+done
+
+shift $((OPTIND - 1))
+
+if [ $# -le 1 ]; then
+    usage
 fi
 
-OUT_DIR=$1
-CA_CN=$2
-SERVER_CN=$3
-DAYS=$4
+CA_CN=$1
+SERVER_CN=$2
+
+: "${KEY_SIZE:=2048}"
+: "${DAYS:=365}"
+: "${OUT_DIR:=$SERVER_CN}"
+: "${TYPE:=ed25519}"
 
 mkdir "$OUT_DIR"
 OUT_DIR="$(pwd)/$OUT_DIR"

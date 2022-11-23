@@ -17,21 +17,37 @@ Required dependencies:
 `gen-server-cert.sh` needs a number of positional arguments:
 
 ```
-    Usage: ./gen-server-cert.sh [output directory] [ca cn] [server cn] [days]
+    Usage: ./gen-server-cert.sh [options] <ca_cn> <server_cn>
 
-    > ./gen-server-cert.sh example rootCA example.com 365
-    > ls example
+        Options:
+          -k    rsa key size, default 2048 bits
+          -l    certificate lifetimes, default 365 days
+          -o    output directory, default <server_cn>
+          -t    key type (rsa or ed25519), default ed25519
+
+    > ./gen-server-cert.sh rootCA example.com
+    > ls example.com
 
     ca.crt  ca.key  example.com.crt  example.com.key
 ```
 
-After creating a certificate authority and server TLS key and certificate, create client TLS keys and certificates using `gen-client-cert.sh`: 
+Create client TLS keys and certificates using `gen-client-cert.sh`.
+
+You will be asked to enter a password used to encrypt the `pkcs12` file.
 
 ```
-    Usage: ./gen-client-cert.sh [server directory] [output directory] [client cn] [days]
+    Usage: ./gen-client-cert.sh [options] <server_directory> <client_cn>
 
-    > ./gen-client-cert.sh example client01 client01 365
+        Options:
+          -k    rsa key size, default 2048 bits
+          -l    certificate lifetimes, default 365 days
+          -o    output directory, default <client_cn>
+          -t    key type (rsa or ed25519), default ed25519
+
+    > ./gen-client-cert.sh example.com client01
+    > Enter Export Password: ******
+    > Verifying - Enter Export Password: ******
     > ls client01
 
-    client01.crt  client01.key  client01.p12
+    ca.crt  client01.crt  client01.key  client01.p12
 ```

@@ -2,15 +2,40 @@
 
 set -e
 
-if [ $# -le 3 ]; then
-    echo "Usage: $0 [server directory] [output directory] [client cn] [days]"
+usage() {
+    echo "Usage: $0 [options] <server_directory> <client_cn>
+
+    Options:
+      -k    rsa key size, default 2048 bits
+      -l    certificate lifetimes, default 365 days
+      -o    output directory, default <client_cn>
+      -t    key type (rsa or ed25519), default ed25519"
     exit 1
+}
+
+while getopts "k:l:o:t:" flag; do
+    case "$flag" in
+        k)  KEY_SIZE=$OPTARG;;
+        l)  DAYS=$OPTARG;;
+        o)  OUT_DIR=$OPTARG;;
+        t)  TYPE=$OPTARG;;
+        \?) usage;;
+    esac
+done
+
+shift $((OPTIND - 1))
+
+if [ $# -le 1 ]; then
+    usage
 fi
 
 IN_DIR=$1
-OUT_DIR=$2
-CLIENT_CN=$3
-DAYS=$4
+CLIENT_CN=$2
+
+: "${KEY_SIZE:=2048}"
+: "${DAYS:=365}"
+: "${OUT_DIR:=$CLIENT_CN}"
+: "${TYPE:=ed25519}"
 
 CA_SUBJECT="$(openssl x509 -noout -subject -in "$IN_DIR"/ca.crt)"
 CA_CN="${CA_SUBJECT:13}"
