@@ -43,11 +43,26 @@ CA_CN="${CA_SUBJECT:13}"
 mkdir "$OUT_DIR"
 OUT_DIR="$(pwd)/$OUT_DIR"
 
-ipsec pki \
-    --gen \
-    --type ed25519 \
-    --outform pem \
-> "$OUT_DIR/$CLIENT_CN.key"
+case "$TYPE" in
+    rsa)
+        ipsec pki \
+            --gen \
+            --type rsa \
+            --size $KEY_SIZE \
+            --outform pem \
+        > "$OUT_DIR/$CLIENT_CN.key"
+        ;;
+    ed25519) 
+        ipsec pki \
+            --gen \
+            --type ed25519 \
+            --outform pem \
+        > "$OUT_DIR/$CLIENT_CN.key"
+        ;; 
+    *)
+        echo "Invalid key type: choose one of rsa or ed25519";
+        exit 1;;
+esac
 
 ipsec pki \
     --pub \

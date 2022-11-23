@@ -2,7 +2,7 @@
 
 Self-signed IPsec TLS certificate generator script. Quickly generate a certificate authority, server TLS key and certificate, and one or more client TLS keys and certificates.
 
-Generated are `ed25519` ECC CA, server and client keys, and `pkcs12` formatted client certificate.
+Generated are `rsa` (or `ed25519`) CA, server and client keys, and `pkcs12` formatted key and certificate bundles.
 
 # Requirements
 
