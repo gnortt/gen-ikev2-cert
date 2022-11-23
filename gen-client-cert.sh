@@ -88,4 +88,5 @@ openssl pkcs12 \
     -caname "$CA_CN" \
     -out "$OUT_DIR/$CLIENT_CN.p12"
 
+cp "$IN_DIR/ca.crt" "$OUT_DIR/"
 chmod 600 "$OUT_DIR"/*.key "$OUT_DIR"/*.p12
